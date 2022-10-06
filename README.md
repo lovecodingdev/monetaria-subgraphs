@@ -1,6 +1,6 @@
-# Aave Protocol Subgraphs
+# Monetaria Protocol Subgraphs
 
-The Aave Protocol subgraphs index data from the protocol smart contracts, and expose a GraphQL endpoint hosted by [The Graph](https://thegraph.com).
+The Monetaria Protocol subgraphs index data from the protocol smart contracts, and expose a GraphQL endpoint hosted by [The Graph](https://thegraph.com).
 
 - [Active Deployments](#active-deployments)
 - [Usage](#usage)
@@ -34,7 +34,7 @@ The Aave Protocol subgraphs index data from the protocol smart contracts, and ex
 
 ## Usage
 
-Subgraphs can be queried directly from the graph explorer, or from [another application](https://thegraph.com/docs/en/developer/querying-from-your-app/). The following section gives common queries for Aave protocol data.
+Subgraphs can be queried directly from the graph explorer, or from [another application](https://thegraph.com/docs/en/developer/querying-from-your-app/). The following section gives common queries for Monetaria protocol data.
 
 ### Helpful Queries
 
@@ -136,7 +136,7 @@ The aave-utilities library includes a [`formatReserves`](https://github.com/aave
 Why does the raw subgraph data not match app.aave.com?
 
 - aToken and debtToken balances are continuously increasing. The subgraph provides a snapshot of the balance at the time of indexing (not querying), which means fields affected by interest such as `totalLiquidity`, `availableLiquidity`, and `totalCurrentVariableDebt` will need to be formatted to get real-time values
-- All rates (liquidityRate, variableBorrowRate, stableBorrowRate) are expressed as _APR_ with RAY units (10**27). To convert to the APY percentage as shown on the Aave frontend: `supplyAPY = (((1 + ((liquidityRate / 10**27) / 31536000)) ^ 31536000) - 1) \* 100`. [`formatReserves`](https://github.com/aave/aave-utilities/#formatReserves) will perform this calculation for you.
+- All rates (liquidityRate, variableBorrowRate, stableBorrowRate) are expressed as _APR_ with RAY units (10**27). To convert to the APY percentage as shown on the Monetaria frontend: `supplyAPY = (((1 + ((liquidityRate / 10**27) / 31536000)) ^ 31536000) - 1) \* 100`. [`formatReserves`](https://github.com/aave/aave-utilities/#formatReserves) will perform this calculation for you.
 
 </details>
 
@@ -177,7 +177,7 @@ To query based on a historical timestamp, you will need to convert the timstamp 
 
 The Graph places a limit on the number of items which can returned by a single query (currently 100). To fetch a larger number of items, the `first` and `skip` parameters can be used to create paginated queries.
 
-For example, if you wanted to fetch the first 200 transactions for an Aave market, you can't query 200 items at once, but you can achieve the same thing by concatenating the output of these queries:
+For example, if you wanted to fetch the first 200 transactions for an Monetaria market, you can't query 200 items at once, but you can achieve the same thing by concatenating the output of these queries:
 
 ```
 {
