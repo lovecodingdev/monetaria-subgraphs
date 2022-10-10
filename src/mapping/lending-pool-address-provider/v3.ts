@@ -83,7 +83,7 @@ export function handleAddressSet(event: AddressSet): void {
   } else if (event.params.id.toString() == 'POOL_CONFIGURATOR') {
     mappedId = 'poolConfigurator';
   } else if (event.params.id.toString() == 'POOL_ADMIN') {
-    mappedId = 'configurationAdmin'; // is this the correct id?
+    mappedId = 'configAdmin'; // is this the correct id?
   } else if (event.params.id.toString() == 'EMERGENCY_ADMIN') {
     mappedId = 'emergencyAdmin';
   } else if (event.params.id.toString() == 'COLLATERAL_MANAGER') {

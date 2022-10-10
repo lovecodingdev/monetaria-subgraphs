@@ -1,7 +1,7 @@
 import { Address, log, ethereum } from '@graphprotocol/graph-ts';
 
-import { AssetSourceUpdated, AaveOracle } from '../../../generated/AaveOracle/AaveOracle';
-import { IExtendedPriceAggregator } from '../../../generated/AaveOracle/IExtendedPriceAggregator';
+import { AssetSourceUpdated, MonetariaOracle } from '../../../generated/MonetariaOracle/MonetariaOracle';
+import { IExtendedPriceAggregator } from '../../../generated/MonetariaOracle/IExtendedPriceAggregator';
 import { AggregatorUpdated } from '../../../generated/ChainlinkSourcesRegistry/ChainlinkSourcesRegistry';
 
 import {
@@ -33,7 +33,7 @@ import {
 import { MOCK_USD_ADDRESS } from '../../utils/constants';
 import { genericPriceUpdate, usdEthPriceUpdate } from '../../helpers/price-updates';
 import { PriceOracle, PriceOracleAsset } from '../../../generated/schema';
-import { EACAggregatorProxy } from '../../../generated/AaveOracle/EACAggregatorProxy';
+import { EACAggregatorProxy } from '../../../generated/MonetariaOracle/EACAggregatorProxy';
 export { handleFallbackOracleUpdated, handleWethSet } from './proxy-price-provider';
 
 export function priceFeedUpdated(
@@ -46,7 +46,7 @@ export function priceFeedUpdated(
   let sAssetAddress = assetAddress.toHexString();
 
   // We get the current price from the oracle. Valid for chainlink source and custom oracle
-  let proxyPriceProvider = AaveOracle.bind(
+  let proxyPriceProvider = MonetariaOracle.bind(
     Address.fromString(priceOracle.proxyPriceProvider.toHexString())
   );
   let priceFromOracle = zeroBI();
@@ -282,7 +282,7 @@ function chainLinkAggregatorUpdated(
 ): void {
   let sAssetAddress = assetAddress.toHexString();
 
-  let proxyPriceProvider = AaveOracle.bind(
+  let proxyPriceProvider = MonetariaOracle.bind(
     Address.fromString(priceOracle.proxyPriceProvider.toHexString())
   );
 

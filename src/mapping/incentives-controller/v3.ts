@@ -41,7 +41,7 @@ export function handleAssetConfigUpdated(event: AssetConfigUpdated): void {
     iController.save();
   }
 
-  //  update rewards configurations
+  //  update rewards configs
   let rewardIncentiveId =
     rewardsController.toHexString() + ':' + asset.toHexString() + ':' + reward.toHexString();
 

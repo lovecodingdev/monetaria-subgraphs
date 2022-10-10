@@ -2,10 +2,10 @@ import { Bytes, Address, log } from '@graphprotocol/graph-ts';
 
 import {
   FallbackOracleUpdated,
-  AaveOracle,
+  MonetariaOracle,
   WethSet,
-} from '../../../generated/AaveOracle/AaveOracle';
-import { GenericOracleI as FallbackPriceOracle } from '../../../generated/AaveOracle/GenericOracleI';
+} from '../../../generated/MonetariaOracle/MonetariaOracle';
+import { GenericOracleI as FallbackPriceOracle } from '../../../generated/MonetariaOracle/GenericOracleI';
 
 import { FallbackPriceOracle as FallbackPriceOracleContract } from '../../../generated/templates';
 import { getOrInitPriceOracle, getPriceOracleAsset } from '../../helpers/initializers';
@@ -48,7 +48,7 @@ export function handleFallbackOracleUpdated(event: FallbackOracleUpdated): void 
 
     // update prices on assets which use fallback
 
-    let proxyPriceProvider = AaveOracle.bind(event.address);
+    let proxyPriceProvider = MonetariaOracle.bind(event.address);
     for (let i = 0; i < priceOracle.tokensWithFallback.length; i++) {
       let token = priceOracle.tokensWithFallback[i];
       let priceOracleAsset = getPriceOracleAsset(token);

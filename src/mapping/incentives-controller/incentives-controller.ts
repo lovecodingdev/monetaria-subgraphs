@@ -6,7 +6,7 @@ import {
   RewardsAccrued,
   RewardsClaimed,
   UserIndexUpdated,
-} from '../../../generated/templates/AaveIncentivesController/AaveIncentivesController';
+} from '../../../generated/templates/MonetariaIncentivesController/MonetariaIncentivesController';
 import {
   ClaimIncentiveCall,
   IncentivesController,
@@ -34,7 +34,7 @@ export function handleAssetConfigUpdated(event: AssetConfigUpdated): void {
   let reserve = Reserve.load(reserveId);
 
   if (reserve != null) {
-    if (asset.toHexString() == reserve.aToken) {
+    if (asset.toHexString() == reserve.mToken) {
       reserve.aEmissionPerSecond = emissionsPerSecond;
       reserve.aIncentivesLastUpdateTimestamp = blockTimestamp;
     } else if (asset.toHexString() == reserve.vToken) {
@@ -115,8 +115,8 @@ export function handleAssetIndexUpdated(event: AssetIndexUpdated): void {
   let reserve = Reserve.load(reserveId);
 
   if (reserve != null) {
-    if (asset.toHexString() == reserve.aToken) {
-      reserve.aTokenIncentivesIndex = index;
+    if (asset.toHexString() == reserve.mToken) {
+      reserve.mTokenIncentivesIndex = index;
       reserve.aIncentivesLastUpdateTimestamp = blockTimestamp;
     } else if (asset.toHexString() == reserve.vToken) {
       reserve.vTokenIncentivesIndex = index;
@@ -154,8 +154,8 @@ export function handleUserIndexUpdated(event: UserIndexUpdated): void {
 
   let reserve = Reserve.load(reserveId);
   if (userReserve != null && reserve != null) {
-    if (asset.toHexString() == reserve.aToken) {
-      userReserve.aTokenincentivesUserIndex = index;
+    if (asset.toHexString() == reserve.mToken) {
+      userReserve.mTokenincentivesUserIndex = index;
       userReserve.aIncentivesLastUpdateTimestamp = blockTimestamp;
     } else if (asset.toHexString() == reserve.vToken) {
       userReserve.vTokenincentivesUserIndex = index;

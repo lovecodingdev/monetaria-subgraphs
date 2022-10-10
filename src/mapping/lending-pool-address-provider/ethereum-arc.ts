@@ -2,7 +2,7 @@ import { BigInt, ethereum, Value, Address, log } from '@graphprotocol/graph-ts';
 
 import {
   LendingPoolUpdated,
-  ConfigurationAdminUpdated,
+  ConfigAdminUpdated,
   LendingPoolConfiguratorUpdated,
   LendingPoolCollateralManagerUpdated,
   AddressSet,
@@ -20,7 +20,7 @@ import {
   getOrInitPriceOracle,
   getProtocol,
 } from '../../helpers/initializers';
-import { Pool, PoolConfigurationHistoryItem } from '../../../generated/schema';
+import { Pool, PoolConfigHistoryItem } from '../../../generated/schema';
 import { getHistoryEntityId } from '../../utils/id-generation';
 
 let POOL_COMPONENTS = [
@@ -28,7 +28,7 @@ let POOL_COMPONENTS = [
   'lendingPoolConfiguratorImpl',
   'lendingPool',
   'lendingPoolImpl',
-  'configurationAdmin',
+  'configAdmin',
   'proxyPriceProvider',
   'lendingRateOracle',
   'lendingPoolCollateralManager',
@@ -37,18 +37,18 @@ let POOL_COMPONENTS = [
 ] as string[];
 
 function saveAddressProvider(lendingPool: Pool, timestamp: BigInt, event: ethereum.Event): void {
-  let configurationHistoryItem = new PoolConfigurationHistoryItem(getHistoryEntityId(event));
+  let configHistoryItem = new PoolConfigHistoryItem(getHistoryEntityId(event));
   for (let i = 0; i < POOL_COMPONENTS.length; i++) {
     let param = POOL_COMPONENTS[i];
     let value = lendingPool.get(param);
     if (!value) {
       return;
     }
-    configurationHistoryItem.set(param, value as Value);
+    configHistoryItem.set(param, value as Value);
   }
-  configurationHistoryItem.timestamp = timestamp.toI32();
-  configurationHistoryItem.pool = lendingPool.id;
-  configurationHistoryItem.save();
+  configHistoryItem.timestamp = timestamp.toI32();
+  configHistoryItem.pool = lendingPool.id;
+  configHistoryItem.save();
 }
 
 function genericAddressProviderUpdate(
@@ -107,7 +107,7 @@ export function handleAddressSet(event: AddressSet): void {
   } else if (event.params.id.toString() == 'LENDING_POOL_CONFIGURATOR') {
     mappedId = 'lendingPoolConfigurator';
   } else if (event.params.id.toString() == 'POOL_ADMIN') {
-    mappedId = 'configurationAdmin'; // is this the correct id?
+    mappedId = 'configAdmin'; // is this the correct id?
   } else if (event.params.id.toString() == 'EMERGENCY_ADMIN') {
     mappedId = 'emergencyAdmin';
   } else if (event.params.id.toString() == 'COLLATERAL_MANAGER') {
@@ -147,8 +147,8 @@ export function handleLendingPoolUpdated(event: LendingPoolUpdated): void {
   genericAddressProviderUpdate('lendingPoolImpl', event.params.newAddress, event, false);
 }
 
-export function handleConfigurationAdminUpdated(event: ConfigurationAdminUpdated): void {
-  genericAddressProviderUpdate('configurationAdmin', event.params.newAddress, event, false);
+export function handleConfigAdminUpdated(event: ConfigAdminUpdated): void {
+  genericAddressProviderUpdate('configAdmin', event.params.newAddress, event, false);
 }
 
 export function handleLendingPoolConfiguratorUpdated(event: LendingPoolConfiguratorUpdated): void {

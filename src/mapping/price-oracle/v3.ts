@@ -12,26 +12,26 @@ import {
   getPriceOracleAsset,
 } from '../../helpers/v3/initializers';
 import { PriceOracle } from '../../../generated/schema';
-import { AaveOracle } from '../../../generated/AaveOracle/AaveOracle';
+import { MonetariaOracle } from '../../../generated/MonetariaOracle/MonetariaOracle';
 import { MOCK_USD_ADDRESS } from '../../utils/constants';
 import { genericPriceUpdate, usdEthPriceUpdate } from '../../helpers/v3/price-updates';
 
 // GANACHE
 export function handleAssetPriceUpdated(event: AssetPriceUpdated): void {
-  let oracleAsset = getPriceOracleAsset(event.params._asset.toHexString());
-  genericPriceUpdate(oracleAsset, event.params._price, event);
+  let oracleAsset = getPriceOracleAsset(event.params.asset.toHexString());
+  genericPriceUpdate(oracleAsset, event.params.price, event);
 }
 
 export function handleEthPriceUpdated(event: EthPriceUpdated): void {
   let priceOracle = getOrInitPriceOracle();
-  usdEthPriceUpdate(priceOracle, event.params._price, event);
+  usdEthPriceUpdate(priceOracle, event.params.price, event);
 }
 
 function genericHandleChainlinkUSDETHPrice(
   price: BigInt,
   event: ethereum.Event,
   priceOracle: PriceOracle,
-  proxyPriceProvider: AaveOracle
+  proxyPriceProvider: MonetariaOracle
 ): void {
   if (price.gt(zeroBI())) {
     priceOracle.usdPriceEthFallbackRequired = false;
@@ -54,7 +54,7 @@ export function handleChainlinkAnswerUpdated(event: AnswerUpdated): void {
   let chainlinkAggregator = getChainlinkAggregator(event.address.toHexString());
 
   if (priceOracle.usdPriceEthMainSource.equals(event.address)) {
-    let proxyPriceProvider = AaveOracle.bind(
+    let proxyPriceProvider = MonetariaOracle.bind(
       Address.fromString(priceOracle.proxyPriceProvider.toHexString())
     );
     genericHandleChainlinkUSDETHPrice(event.params.current, event, priceOracle, proxyPriceProvider);
@@ -81,7 +81,7 @@ export function handleChainlinkAnswerUpdated(event: AnswerUpdated): void {
       } else {
         // oracle answer invalid, start using fallback oracle
         oracleAsset.isFallbackRequired = true;
-        let proxyPriceProvider = AaveOracle.bind(
+        let proxyPriceProvider = MonetariaOracle.bind(
           Address.fromString(priceOracle.proxyPriceProvider.toHexString())
         );
         let assetPrice = proxyPriceProvider.try_getAssetPrice(Address.fromString(oracleAsset.id));

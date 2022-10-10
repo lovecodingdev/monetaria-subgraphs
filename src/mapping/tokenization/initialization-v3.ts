@@ -1,12 +1,12 @@
-import { Initialized as ATokenInitialized } from '../../../generated/templates/AToken/AToken';
+import { Initialized as MTokenInitialized } from '../../../generated/templates/MToken/MToken';
 import { Initialized as VTokenInitialized } from '../../../generated/templates/VariableDebtToken/VariableDebtToken';
 import { Initialized as STokenInitialized } from '../../../generated/templates/StableDebtToken/StableDebtToken';
 
 import { Address, log } from '@graphprotocol/graph-ts';
 import { ContractToPoolMapping, MapAssetPool } from '../../../generated/schema';
 export {
-  handleATokenBurn,
-  handleATokenMint,
+  handleMTokenBurn,
+  handleMTokenMint,
   handleBalanceTransfer,
   handleVariableTokenBurn,
   handleVariableTokenMint,
@@ -27,17 +27,17 @@ function initializeToken(asset: Address, underlyingAsset: Address, pool: Address
   }
 }
 
-// export function handleATokenBurn(event: Burn): void {
+// export function handleMTokenBurn(event: Burn): void {
 //   log.error('Burn ---------------------------------', []);
 //   // tokenBurn(event, event.params.from, event.params.value, event.params.index);
 // }
 
-// export function handleATokenMint(event: Mint): void {
+// export function handleMTokenMint(event: Mint): void {
 //   log.error('Mint ---------------------------------', []);
 //   // tokenMint(event, event.params.from, event.params.value, event.params.index);
 // }
 
-export function handleATokenInitialized(event: ATokenInitialized): void {
+export function handleMTokenInitialized(event: MTokenInitialized): void {
   log.error('asset: {}', [event.address.toHexString()]);
   initializeToken(event.address, event.params.underlyingAsset, event.params.pool);
 }

@@ -271,7 +271,7 @@ type Repay implements UserTransaction @entity {
   userReserve: UserReserve!
   amount: BigInt!
   timestamp: Int!
-  useATokens: Boolean!
+  useMTokens: Boolean!
   assetPriceUSD: BigDecimal!
 }
 
@@ -364,7 +364,7 @@ type UserEModeSet @entity {
   categoryId: Int!
 }
 
-type ReserveConfigurationHistoryItem @entity {
+type ReserveConfigHistoryItem @entity {
   """
   tx hash
   """ # TODO: replace with blockNumber/timestamp + blockPosition
@@ -396,7 +396,7 @@ type ReserveParamsHistoryItem @entity {
   liquidityIndex: BigInt!
   liquidityRate: BigInt!
   totalLiquidity: BigInt!
-  totalATokenSupply: BigInt!
+  totalMTokenSupply: BigInt!
   totalLiquidityAsCollateral: BigInt!
   availableLiquidity: BigInt!
   priceInEth: BigInt!
@@ -550,7 +550,7 @@ type Reserve @entity {
   reserveLiquidationBonus: BigInt!
   utilizationRate: BigDecimal! # default: 0
   totalLiquidity: BigInt! # default: 0
-  totalATokenSupply: BigInt!
+  totalMTokenSupply: BigInt!
   totalLiquidityAsCollateral: BigInt! # default: 0
   availableLiquidity: BigInt! # default: 0
   totalPrincipalStableDebt: BigInt! # default: 0
@@ -564,7 +564,7 @@ type Reserve @entity {
   stableBorrowRate: BigInt!
   liquidityIndex: BigInt!
   variableBorrowIndex: BigInt!
-  aToken: SubToken!
+  mToken: SubToken!
   vToken: SubToken!
   sToken: SubToken!
   reserveFactor: BigInt! #default 0
@@ -624,19 +624,19 @@ type Reserve @entity {
   flashLoanHistory: [FlashLoan!]! @derivedFrom(field: "reserve")
   liquidationCallHistory: [LiquidationCall!]! @derivedFrom(field: "collateralReserve")
   paramsHistory: [ReserveParamsHistoryItem!]! @derivedFrom(field: "reserve")
-  configurationHistory: [ReserveConfigurationHistoryItem!]! @derivedFrom(field: "reserve")
+  configHistory: [ReserveConfigHistoryItem!]! @derivedFrom(field: "reserve")
   supplies: [Supply!]! @derivedFrom(field: "reserve")
 }
 
-type ATokenBalanceHistoryItem @entity {
+type MTokenBalanceHistoryItem @entity {
   """
   userReserve + txHash
   """ # TODO: replace with blockNumber/timestamp + blockPosition
   id: ID!
   userReserve: UserReserve!
   timestamp: Int!
-  scaledATokenBalance: BigInt!
-  currentATokenBalance: BigInt!
+  scaledMTokenBalance: BigInt!
+  currentMTokenBalance: BigInt!
   index: BigInt!
 }
 
@@ -709,8 +709,8 @@ type UserReserve @entity {
   reserve: Reserve!
   user: User!
   usageAsCollateralEnabledOnUser: Boolean!
-  scaledATokenBalance: BigInt!
-  currentATokenBalance: BigInt!
+  scaledMTokenBalance: BigInt!
+  currentMTokenBalance: BigInt!
   scaledVariableDebt: BigInt!
   currentVariableDebt: BigInt!
   principalStableDebt: BigInt!
@@ -729,7 +729,7 @@ type UserReserve @entity {
     @derivedFrom(field: "userReserve")
   variableTokenDelegatedAllowances: [VariableTokenDelegatedAllowance!]!
     @derivedFrom(field: "userReserve")
-  aTokenBalanceHistory: [ATokenBalanceHistoryItem!]! @derivedFrom(field: "userReserve")
+  mTokenBalanceHistory: [MTokenBalanceHistoryItem!]! @derivedFrom(field: "userReserve")
   vTokenBalanceHistory: [VTokenBalanceHistoryItem!]! @derivedFrom(field: "userReserve")
   sTokenBalanceHistory: [STokenBalanceHistoryItem!]! @derivedFrom(field: "userReserve")
   #borrowStateHistory: [UserBorrowHistoryItem!]! @derivedFrom(field: "userReserve")

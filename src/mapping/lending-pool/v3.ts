@@ -190,7 +190,7 @@ export function handleRepay(event: Repay): void {
   repay.reserve = poolReserve.id;
   repay.amount = event.params.amount;
   repay.timestamp = event.block.timestamp.toI32();
-  repay.useATokens = event.params.useATokens;
+  repay.useMTokens = event.params.useMTokens;
   let priceOracleAsset = getPriceOracleAsset(poolReserve.price);
   repay.assetPriceUSD = priceOracleAsset.priceInEth.divDecimal(USD_PRECISION);
   repay.save();
@@ -265,7 +265,7 @@ export function handleFlashLoan(event: FlashLoan): void {
   poolReserve.lifetimeFlashLoanProtocolPremium = poolReserve.lifetimeFlashLoanProtocolPremium.plus(
     premiumToProtocol
   );
-  poolReserve.totalATokenSupply = poolReserve.totalATokenSupply.plus(premium);
+  poolReserve.totalMTokenSupply = poolReserve.totalMTokenSupply.plus(premium);
 
   poolReserve.save();
 
@@ -337,12 +337,12 @@ export function handleReserveDataUpdated(event: ReserveDataUpdated): void {
   let prevTimestamp = BigInt.fromI32(reserve.lastUpdateTimestamp);
   if (timestamp.gt(prevTimestamp)) {
     let growth = calculateGrowth(
-      reserve.totalATokenSupply,
+      reserve.totalMTokenSupply,
       reserve.liquidityRate,
       prevTimestamp,
       timestamp
     );
-    reserve.totalATokenSupply = reserve.totalATokenSupply.plus(growth);
+    reserve.totalMTokenSupply = reserve.totalMTokenSupply.plus(growth);
     reserve.lifetimeSuppliersInterestEarned = reserve.lifetimeSuppliersInterestEarned.plus(growth);
   }
   reserve.liquidityRate = event.params.liquidityRate;

@@ -1,9 +1,9 @@
 {
   "network": "goerli",
-  "AaveOracleAddress": "0x5bed0810073cc9f0DacF73C648202249E87eF6cB",
-  "AaveOracleStartBlock": 7138733,
-  "PoolAddressesProviderRegistryAddress": "0xC87385b5E62099f92d490750Fcd6C901a524BBcA",
-  "PoolAddressesProviderRegistryStartBlock": 7138674,
-  "RewardsControllerAddress": "0x0C501fB73808e1BD73cBDdd0c99237bbc481Bb58",
-  "RewardsControllerStartBlock": 7138752
+  "MonetariaOracleAddress": "0x7f317b397120Dca9a8eC99FaB161843d8b7a51D2",
+  "MonetariaOracleStartBlock": 7627282,
+  "PoolAddressesProviderRegistryAddress": "0x87Aebc6809c8e2CB7370ef6dac47e604EDd0065c",
+  "PoolAddressesProviderRegistryStartBlock": 7612730,
+  "RewardsControllerAddress": "0x3E145CE1AFEe3A94453914e026B4df58e76f8F8B",
+  "RewardsControllerStartBlock": 7612836
 }

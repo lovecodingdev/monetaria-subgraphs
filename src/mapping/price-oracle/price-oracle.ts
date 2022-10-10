@@ -13,7 +13,7 @@ import {
   getPriceOracleAsset,
 } from '../../helpers/initializers';
 import { PriceOracle } from '../../../generated/schema';
-import { AaveOracle } from '../../../generated/AaveOracle/AaveOracle';
+import { MonetariaOracle } from '../../../generated/MonetariaOracle/MonetariaOracle';
 import { MOCK_USD_ADDRESS } from '../../utils/constants';
 import { genericPriceUpdate, usdEthPriceUpdate } from '../../helpers/price-updates';
 
@@ -55,7 +55,7 @@ function genericHandleChainlinkUSDETHPrice(
   price: BigInt,
   event: ethereum.Event,
   priceOracle: PriceOracle,
-  proxyPriceProvider: AaveOracle
+  proxyPriceProvider: MonetariaOracle
 ): void {
   if (price.gt(zeroBI())) {
     priceOracle.usdPriceEthFallbackRequired = false;
@@ -78,7 +78,7 @@ export function handleChainlinkAnswerUpdated(event: AnswerUpdated): void {
   let chainlinkAggregator = getChainlinkAggregator(event.address.toHexString());
 
   if (priceOracle.usdPriceEthMainSource.equals(event.address)) {
-    let proxyPriceProvider = AaveOracle.bind(
+    let proxyPriceProvider = MonetariaOracle.bind(
       Address.fromString(priceOracle.proxyPriceProvider.toHexString())
     );
     genericHandleChainlinkUSDETHPrice(event.params.current, event, priceOracle, proxyPriceProvider);
@@ -105,7 +105,7 @@ export function handleChainlinkAnswerUpdated(event: AnswerUpdated): void {
       } else {
         // oracle answer invalid, start using fallback oracle
         oracleAsset.isFallbackRequired = true;
-        let proxyPriceProvider = AaveOracle.bind(
+        let proxyPriceProvider = MonetariaOracle.bind(
           Address.fromString(priceOracle.proxyPriceProvider.toHexString())
         );
         let assetPrice = proxyPriceProvider.try_getAssetPrice(Address.fromString(oracleAsset.id));

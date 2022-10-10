@@ -153,7 +153,7 @@ export function handleAssetSourceUpdatedAnchor(event: AssetSourceUpdated): void 
   }
   let priceOracle = getOrInitPriceOracle();
   if (priceOracle.proxyPriceProvider.equals(zeroAddress())) {
-    log.error(`aave oracle should already have been deployed : {}`, [event.address.toHexString()]);
+    log.error(`monetaria oracle should already have been deployed : {}`, [event.address.toHexString()]);
   }
 
   let priceOracleAsset = getPriceOracleAsset(assetAddress.toHexString());

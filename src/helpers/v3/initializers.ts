@@ -7,7 +7,7 @@ import {
   User,
   UserReserve,
   ReserveParamsHistoryItem,
-  ReserveConfigurationHistoryItem,
+  ReserveConfigHistoryItem,
   Referrer,
   ChainlinkAggregator,
   ContractToPoolMapping,
@@ -67,10 +67,10 @@ function initUserReserve(
     userReserve = new UserReserve(userReserveId);
     userReserve.pool = poolId;
     userReserve.usageAsCollateralEnabledOnUser = false;
-    userReserve.scaledATokenBalance = zeroBI();
+    userReserve.scaledMTokenBalance = zeroBI();
     userReserve.scaledVariableDebt = zeroBI();
     userReserve.principalStableDebt = zeroBI();
-    userReserve.currentATokenBalance = zeroBI();
+    userReserve.currentMTokenBalance = zeroBI();
     userReserve.currentVariableDebt = zeroBI();
     userReserve.currentStableDebt = zeroBI();
     userReserve.stableBorrowRate = zeroBI();
@@ -165,7 +165,7 @@ export function getOrInitReserve(underlyingAsset: Bytes, event: ethereum.Event):
     reserve.stableRateSlope2 = zeroBI();
     reserve.utilizationRate = zeroBD();
     reserve.totalLiquidity = zeroBI();
-    reserve.totalATokenSupply = zeroBI();
+    reserve.totalMTokenSupply = zeroBI();
     reserve.totalLiquidityAsCollateral = zeroBI();
     reserve.availableLiquidity = zeroBI();
     reserve.liquidityRate = zeroBI();
@@ -175,7 +175,7 @@ export function getOrInitReserve(underlyingAsset: Bytes, event: ethereum.Event):
     reserve.liquidityIndex = zeroBI();
     reserve.variableBorrowIndex = zeroBI();
     reserve.reserveFactor = zeroBI(); // TODO: is default 0?
-    reserve.aToken = zeroAddress().toHexString();
+    reserve.mToken = zeroAddress().toHexString();
     reserve.vToken = zeroAddress().toHexString();
     reserve.sToken = zeroAddress().toHexString();
 
@@ -216,7 +216,7 @@ export function getOrInitReserve(underlyingAsset: Bytes, event: ethereum.Event):
       priceOracleAsset.save();
     }
     reserve.price = priceOracleAsset.id;
-    // TODO: think about AToken
+    // TODO: think about MToken
   }
   return reserve as Reserve;
 }
@@ -268,7 +268,7 @@ export function getOrInitReserveParamsHistoryItem(
     reserveParamsHistoryItem.liquidityRate = zeroBI();
     reserveParamsHistoryItem.totalLiquidity = zeroBI();
     reserveParamsHistoryItem.accruedToTreasury = zeroBI();
-    reserveParamsHistoryItem.totalATokenSupply = zeroBI();
+    reserveParamsHistoryItem.totalMTokenSupply = zeroBI();
     reserveParamsHistoryItem.availableLiquidity = zeroBI();
     reserveParamsHistoryItem.totalLiquidityAsCollateral = zeroBI();
     reserveParamsHistoryItem.priceInEth = zeroBI();
@@ -297,24 +297,24 @@ export function getOrInitReserveParamsHistoryItem(
   return reserveParamsHistoryItem as ReserveParamsHistoryItem;
 }
 
-export function getOrInitReserveConfigurationHistoryItem(
+export function getOrInitReserveConfigHistoryItem(
   id: Bytes,
   reserve: Reserve
-): ReserveConfigurationHistoryItem {
-  let reserveConfigurationHistoryItem = ReserveConfigurationHistoryItem.load(id.toHexString());
-  if (!reserveConfigurationHistoryItem) {
-    reserveConfigurationHistoryItem = new ReserveConfigurationHistoryItem(id.toHexString());
-    reserveConfigurationHistoryItem.usageAsCollateralEnabled = false;
-    reserveConfigurationHistoryItem.borrowingEnabled = false;
-    reserveConfigurationHistoryItem.stableBorrowRateEnabled = false;
-    reserveConfigurationHistoryItem.isActive = false;
-    reserveConfigurationHistoryItem.reserveInterestRateStrategy = new Bytes(1);
-    reserveConfigurationHistoryItem.baseLTVasCollateral = zeroBI();
-    reserveConfigurationHistoryItem.reserveLiquidationThreshold = zeroBI();
-    reserveConfigurationHistoryItem.reserveLiquidationBonus = zeroBI();
-    reserveConfigurationHistoryItem.reserve = reserve.id;
+): ReserveConfigHistoryItem {
+  let reserveConfigHistoryItem = ReserveConfigHistoryItem.load(id.toHexString());
+  if (!reserveConfigHistoryItem) {
+    reserveConfigHistoryItem = new ReserveConfigHistoryItem(id.toHexString());
+    reserveConfigHistoryItem.usageAsCollateralEnabled = false;
+    reserveConfigHistoryItem.borrowingEnabled = false;
+    reserveConfigHistoryItem.stableBorrowRateEnabled = false;
+    reserveConfigHistoryItem.isActive = false;
+    reserveConfigHistoryItem.reserveInterestRateStrategy = new Bytes(1);
+    reserveConfigHistoryItem.baseLTVasCollateral = zeroBI();
+    reserveConfigHistoryItem.reserveLiquidationThreshold = zeroBI();
+    reserveConfigHistoryItem.reserveLiquidationBonus = zeroBI();
+    reserveConfigHistoryItem.reserve = reserve.id;
   }
-  return reserveConfigurationHistoryItem as ReserveConfigurationHistoryItem;
+  return reserveConfigHistoryItem as ReserveConfigHistoryItem;
 }
 
 // @ts-ignore

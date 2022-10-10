@@ -1,5 +1,5 @@
 import { PriceOracle, PriceOracleAsset } from '../../../generated/schema';
-import { AaveOracle, AssetSourceUpdated } from '../../../generated/AaveOracle/AaveOracle';
+import { MonetariaOracle, AssetSourceUpdated } from '../../../generated/MonetariaOracle/MonetariaOracle';
 import { Address, ethereum, log } from '@graphprotocol/graph-ts';
 import {
   formatUsdEthChainlinkPrice,
@@ -8,8 +8,8 @@ import {
   zeroAddress,
   zeroBI,
 } from '../../utils/converters';
-import { IExtendedPriceAggregator } from '../../../generated/AaveOracle/IExtendedPriceAggregator';
-import { EACAggregatorProxy } from '../../../generated/AaveOracle/EACAggregatorProxy';
+import { IExtendedPriceAggregator } from '../../../generated/MonetariaOracle/IExtendedPriceAggregator';
+import { EACAggregatorProxy } from '../../../generated/MonetariaOracle/EACAggregatorProxy';
 import { ChainlinkAggregator as ChainlinkAggregatorContract } from '../../../generated/templates';
 import {
   getChainlinkAggregator,
@@ -31,7 +31,7 @@ export function priceFeedUpdated(
   let sAssetAddress = assetAddress.toHexString();
 
   // We get the current price from the oracle. Valid for chainlink source and custom oracle
-  let proxyPriceProvider = AaveOracle.bind(
+  let proxyPriceProvider = MonetariaOracle.bind(
     Address.fromString(priceOracle.proxyPriceProvider.toHexString())
   );
   let priceFromOracle = zeroBI();

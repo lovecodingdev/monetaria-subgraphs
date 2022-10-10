@@ -1,4 +1,4 @@
-import { RewardsClaimed1 } from '../../../generated/templates/AaveIncentivesController/AaveIncentivesController';
+import { RewardsClaimed1 } from '../../../generated/templates/MonetariaIncentivesController/MonetariaIncentivesController';
 import { handleRewardsClaimedCommon } from './incentives-controller';
 export {
   handleAssetConfigUpdated,

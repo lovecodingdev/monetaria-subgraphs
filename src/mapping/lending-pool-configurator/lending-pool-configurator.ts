@@ -8,19 +8,19 @@ import {
   StableRateEnabledOnReserve,
   ReserveActivated,
   ReserveDeactivated,
-  CollateralConfigurationChanged,
+  CollateralConfigChanged,
   ReserveInterestRateStrategyChanged,
   ReserveFactorChanged,
   ReserveDecimalsChanged,
-  ATokenUpgraded,
+  MTokenUpgraded,
   StableDebtTokenUpgraded,
   VariableDebtTokenUpgraded,
 } from '../../../generated/templates/LendingPoolConfigurator/LendingPoolConfigurator';
 import { DefaultReserveInterestRateStrategy } from '../../../generated/templates/LendingPoolConfigurator/DefaultReserveInterestRateStrategy';
 import {
-  getOrInitAToken,
+  getOrInitMToken,
   getOrInitReserve,
-  getOrInitReserveConfigurationHistoryItem,
+  getOrInitReserveConfigHistoryItem,
 } from '../../helpers/initializers';
 import { Reserve } from '../../../generated/schema';
 import { zeroAddress, zeroBI } from '../../utils/converters';
@@ -32,18 +32,18 @@ export function saveReserve(reserve: Reserve, event: ethereum.Event): void {
   reserve.lastUpdateTimestamp = timestamp;
   reserve.save();
 
-  let configurationHistoryItem = getOrInitReserveConfigurationHistoryItem(txHash, reserve);
-  configurationHistoryItem.usageAsCollateralEnabled = reserve.usageAsCollateralEnabled;
-  configurationHistoryItem.borrowingEnabled = reserve.borrowingEnabled;
-  configurationHistoryItem.stableBorrowRateEnabled = reserve.stableBorrowRateEnabled;
-  configurationHistoryItem.isActive = reserve.isActive;
-  configurationHistoryItem.isFrozen = reserve.isFrozen;
-  configurationHistoryItem.reserveInterestRateStrategy = reserve.reserveInterestRateStrategy;
-  configurationHistoryItem.baseLTVasCollateral = reserve.baseLTVasCollateral;
-  configurationHistoryItem.reserveLiquidationThreshold = reserve.reserveLiquidationThreshold;
-  configurationHistoryItem.reserveLiquidationBonus = reserve.reserveLiquidationBonus;
-  configurationHistoryItem.timestamp = timestamp;
-  configurationHistoryItem.save();
+  let configHistoryItem = getOrInitReserveConfigHistoryItem(txHash, reserve);
+  configHistoryItem.usageAsCollateralEnabled = reserve.usageAsCollateralEnabled;
+  configHistoryItem.borrowingEnabled = reserve.borrowingEnabled;
+  configHistoryItem.stableBorrowRateEnabled = reserve.stableBorrowRateEnabled;
+  configHistoryItem.isActive = reserve.isActive;
+  configHistoryItem.isFrozen = reserve.isFrozen;
+  configHistoryItem.reserveInterestRateStrategy = reserve.reserveInterestRateStrategy;
+  configHistoryItem.baseLTVasCollateral = reserve.baseLTVasCollateral;
+  configHistoryItem.reserveLiquidationThreshold = reserve.reserveLiquidationThreshold;
+  configHistoryItem.reserveLiquidationBonus = reserve.reserveLiquidationBonus;
+  configHistoryItem.timestamp = timestamp;
+  configHistoryItem.save();
 }
 
 export function updateInterestRateStrategy(
@@ -80,7 +80,7 @@ export function handleReserveInterestRateStrategyChanged(
   //////
   let reserve = getOrInitReserve(event.params.asset, event);
   // if reserve is not initialize, needed to handle ropsten wrong deployment
-  if (reserve.aToken == zeroAddress().toHexString()) {
+  if (reserve.mToken == zeroAddress().toHexString()) {
     return;
   }
   updateInterestRateStrategy(reserve, event.params.strategy, false);
@@ -132,7 +132,7 @@ export function handleReserveUnfreezed(event: ReserveDeactivated): void {
   saveReserve(reserve, event);
 }
 
-export function handleCollateralConfigurationChanged(event: CollateralConfigurationChanged): void {
+export function handleCollateralConfigChanged(event: CollateralConfigChanged): void {
   let reserve = getOrInitReserve(event.params.asset, event);
   reserve.usageAsCollateralEnabled = false;
   if (event.params.liquidationThreshold.gt(zeroBI())) {
@@ -157,19 +157,19 @@ export function handleReserveDecimalsChanged(event: ReserveDecimalsChanged): voi
   saveReserve(reserve, event);
 }
 
-export function handleATokenUpgraded(event: ATokenUpgraded): void {
-  let aToken = getOrInitAToken(event.params.proxy);
-  aToken.tokenContractImpl = event.params.implementation;
-  aToken.save();
+export function handleMTokenUpgraded(event: MTokenUpgraded): void {
+  let mToken = getOrInitMToken(event.params.proxy);
+  mToken.tokenContractImpl = event.params.implementation;
+  mToken.save();
 }
 
 export function handleStableDebtTokenUpgraded(event: StableDebtTokenUpgraded): void {
-  let sToken = getOrInitAToken(event.params.proxy);
+  let sToken = getOrInitMToken(event.params.proxy);
   sToken.tokenContractImpl = event.params.implementation;
   sToken.save();
 }
 export function handleVariableDebtTokenUpgraded(event: VariableDebtTokenUpgraded): void {
-  let vToken = getOrInitAToken(event.params.proxy);
+  let vToken = getOrInitMToken(event.params.proxy);
   vToken.tokenContractImpl = event.params.implementation;
   vToken.save();
 }

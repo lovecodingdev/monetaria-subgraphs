@@ -1,6 +1,6 @@
 specVersion: 0.0.4
 description: Protocol v3 subgraph
-repository: https://github.com/aave/protocol-subgraphs
+repository: https://github.com/lovecodingdev/monetaria-subgraphs
 schema:
   file: ./schema.graphql
 dataSources:
@@ -8,12 +8,12 @@ dataSources:
   #      ORACLES / PRICE PROVIDERS
   # --------------------------------------
   - kind: ethereum/contract
-    name: AaveOracle
+    name: MonetariaOracle
     network: {{network}}
     source:
-      address: '{{AaveOracleAddress}}'
-      startBlock: {{AaveOracleStartBlock}}
-      abi: AaveOracle
+      address: '{{MonetariaOracleAddress}}'
+      startBlock: {{MonetariaOracleStartBlock}}
+      abi: MonetariaOracle
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -23,8 +23,8 @@ dataSources:
         - PriceOracle
         - PriceOracleAsset
       abis:
-        - name: AaveOracle
-          file: ./abis/v3/AaveOracle.json
+        - name: MonetariaOracle
+          file: ./abis/v3/MonetariaOracle.json
         - name: PriceOracle
           file: ./abis/v3/PriceOracle.json
         - name: IExtendedPriceAggregator
@@ -58,8 +58,8 @@ dataSources:
   #     abis:
   #       - name: ChainlinkSourcesRegistry
   #         file: ./abis/helpers/ChainlinkSourcesRegistry.json
-  #       - name: AaveOracle
-  #         file: ./abis/v3/AaveOracle.json
+  #       - name: MonetariaOracle
+  #         file: ./abis/v3/MonetariaOracle.json
   #       - name: PriceOracle
   #         file: ./abis/v3/PriceOracle.json
   #       - name: IExtendedPriceAggregator
@@ -119,8 +119,8 @@ dataSources:
           file: ./abis/v3/RewardsController.json
         - name: IERC20Detailed
           file: ./abis/helpers/IERC20Detailed.json
-        - name: AToken
-          file: ./abis/v3/AToken.json
+        - name: MToken
+          file: ./abis/v3/MToken.json
       eventHandlers:
         - event: AssetConfigUpdated(indexed address,indexed address,uint256,uint256,uint256,uint256,uint256)
           handler: handleAssetConfigUpdated
@@ -155,8 +155,8 @@ templates:
       abis:
         - name: PriceOracle
           file: ./abis/v3/PriceOracle.json
-        - name: AaveOracle
-          file: ./abis/v3/AaveOracle.json
+        - name: MonetariaOracle
+          file: ./abis/v3/MonetariaOracle.json
       eventHandlers:
         - event: AssetPriceUpdated(address,uint256,uint256)
           handler: handleAssetPriceUpdated
@@ -178,31 +178,31 @@ templates:
       abis:
         - name: IExtendedPriceAggregator
           file: ./abis/helpers/IExtendedPriceAggregator.json
-        - name: AaveOracle
-          file: ./abis/v3/AaveOracle.json
+        - name: MonetariaOracle
+          file: ./abis/v3/MonetariaOracle.json
       eventHandlers:
         - event: AnswerUpdated(indexed int256,indexed uint256,uint256)
           handler: handleChainlinkAnswerUpdated
       file: src/mapping/price-oracle/v3.ts
 
   # --------------------------------------
-  #      AToken / Stable / Variable
+  #      MToken / Stable / Variable
   # --------------------------------------
   - kind: ethereum/contract
-    name: AToken
+    name: MToken
     network: {{network}}
     source:
-      abi: AToken
+      abi: MToken
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
-        - AToken
+        - MToken
         - UserReserve
       abis:
-        - name: AToken
-          file: ./abis/v3/AToken.json
+        - name: MToken
+          file: ./abis/v3/MToken.json
         - name: IERC20Detailed
           file: ./abis/helpers/IERC20Detailed.json
         - name: RewardsController
@@ -211,13 +211,13 @@ templates:
           file: ./abis/v3/Pool.json
       eventHandlers:
         - event: Burn(indexed address,indexed address,uint256,uint256,uint256)
-          handler: handleATokenBurn
+          handler: handleMTokenBurn
         - event: BalanceTransfer(indexed address,indexed address,uint256,uint256)
           handler: handleBalanceTransfer
         - event: Mint(indexed address,indexed address,uint256,uint256,uint256)
-          handler: handleATokenMint
+          handler: handleMTokenMint
         - event: Initialized(indexed address,indexed address,address,address,uint8,string,string,bytes)
-          handler: handleATokenInitialized
+          handler: handleMTokenInitialized
       file: src/mapping/tokenization/initialization-v3.ts
   - kind: ethereum/contract
     name: StableDebtToken
@@ -348,8 +348,8 @@ templates:
           handler: handleReserveInitialized
         - event: ReserveBorrowing(indexed address,bool)
           handler: handleReserveBorrowing
-        - event: CollateralConfigurationChanged(indexed address,uint256,uint256,uint256)
-          handler: handleCollateralConfigurationChanged
+        - event: CollateralConfigChanged(indexed address,uint256,uint256,uint256)
+          handler: handleCollateralConfigChanged
         - event: ReserveStableRateBorrowing(indexed address,bool)
           handler: handleReserveStableRateBorrowing
         - event: ReserveActive(indexed address,bool)
@@ -362,8 +362,8 @@ templates:
           handler: handleReserveDropped
         - event: ReserveFactorChanged(indexed address,uint256,uint256)
           handler: handleReserveFactorChanged
-        - event: ATokenUpgraded(indexed address,indexed address,indexed address)
-          handler: handleATokenUpgraded
+        - event: MTokenUpgraded(indexed address,indexed address,indexed address)
+          handler: handleMTokenUpgraded
         - event: BorrowCapChanged(indexed address,uint256,uint256)
           handler: handleBorrowCapChanged
         - event: BorrowableInIsolationChanged(address,bool)

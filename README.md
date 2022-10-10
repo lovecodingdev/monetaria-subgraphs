@@ -10,27 +10,27 @@ The Monetaria Protocol subgraphs index data from the protocol smart contracts, a
 
 ### Production networks
 
-- [ETH Mainnet V2](https://thegraph.com/hosted-service/subgraph/aave/protocol-v2)
-- [Polygon V2](https://thegraph.com/hosted-service/subgraph/aave/aave-v2-matic)
-- [Avalanche V2](https://thegraph.com/hosted-service/subgraph/aave/protocol-v2-avalanche)
-- [Polygon V3](https://thegraph.com/hosted-service/subgraph/aave/protocol-v3-polygon)
-- [Avalanche V3](https://thegraph.com/hosted-service/subgraph/aave/protocol-v3-avalanche)
-- [Arbitrum V3](https://thegraph.com/hosted-service/subgraph/aave/protocol-v3-arbitrum)
-- [Optimism V3](https://thegraph.com/hosted-service/subgraph/aave/protocol-v3-optimism)
-- [Fantom V3](https://thegraph.com/hosted-service/subgraph/aave/protocol-v3-fantom)
-- [Harmony V3](https://thegraph.com/hosted-service/subgraph/aave/protocol-v3-harmony)
+- [ETH Mainnet V2](https://thegraph.com/hosted-service/subgraph/monetaria/protocol-v2)
+- [Polygon V2](https://thegraph.com/hosted-service/subgraph/monetaria/monetaria-v2-matic)
+- [Avalanche V2](https://thegraph.com/hosted-service/subgraph/monetaria/protocol-v2-avalanche)
+- [Polygon V3](https://thegraph.com/hosted-service/subgraph/monetaria/protocol-v3-polygon)
+- [Avalanche V3](https://thegraph.com/hosted-service/subgraph/monetaria/protocol-v3-avalanche)
+- [Arbitrum V3](https://thegraph.com/hosted-service/subgraph/monetaria/protocol-v3-arbitrum)
+- [Optimism V3](https://thegraph.com/hosted-service/subgraph/monetaria/protocol-v3-optimism)
+- [Fantom V3](https://thegraph.com/hosted-service/subgraph/monetaria/protocol-v3-fantom)
+- [Harmony V3](https://thegraph.com/hosted-service/subgraph/monetaria/protocol-v3-harmony)
 
 ### Test networks
 
-- [Goerli V2](https://thegraph.com/hosted-service/subgraph/aave/protocol-v2-goerli)
-- [Goerli V3](https://thegraph.com/hosted-service/subgraph/aave/protocol-v3-goerli)
-- [Mumbai V2](https://thegraph.com/hosted-service/subgraph/aave/aave-v2-polygon-mumbai)
-- [Mumbai V3](https://thegraph.com/hosted-service/subgraph/aave/protocol-v3-mumbai)
-- [Fuji V2](https://thegraph.com/hosted-service/subgraph/aave/protocol-v2-fuji)
-- [Fuji V3](https://thegraph.com/hosted-service/subgraph/aave/protocol-v3-fuji)
-- [Arbitrum Goerli V3](https://thegraph.com/hosted-service/subgraph/aave/protocol-v3-arbitrum-goerli)
-- [Optimism Goerli V3](https://thegraph.com/hosted-service/subgraph/aave/protocol-v3-optimism-goerli)
-- [Fantom Testnet V3](https://thegraph.com/hosted-service/subgraph/aave/protocol-v3-fantom-testnet)
+- [Goerli V2](https://thegraph.com/hosted-service/subgraph/monetaria/protocol-v2-goerli)
+- [Goerli V3](https://thegraph.com/hosted-service/subgraph/monetaria/protocol-v3-goerli)
+- [Mumbai V2](https://thegraph.com/hosted-service/subgraph/monetaria/monetaria-v2-polygon-mumbai)
+- [Mumbai V3](https://thegraph.com/hosted-service/subgraph/monetaria/protocol-v3-mumbai)
+- [Fuji V2](https://thegraph.com/hosted-service/subgraph/monetaria/protocol-v2-fuji)
+- [Fuji V3](https://thegraph.com/hosted-service/subgraph/monetaria/protocol-v3-fuji)
+- [Arbitrum Goerli V3](https://thegraph.com/hosted-service/subgraph/monetaria/protocol-v3-arbitrum-goerli)
+- [Optimism Goerli V3](https://thegraph.com/hosted-service/subgraph/monetaria/protocol-v3-optimism-goerli)
+- [Fantom Testnet V3](https://thegraph.com/hosted-service/subgraph/monetaria/protocol-v3-fantom-testnet)
 
 ## Usage
 
@@ -129,14 +129,14 @@ See [TheGraph API](https://thegraph.com/docs/en/developer/graphql-api/) docs for
 
 #### Reserve Summary
 
-The `reserve` entity gives data on the assets of the protocol including rates, configuration, and total supply/borrow amounts.
+The `reserve` entity gives data on the assets of the protocol including rates, config, and total supply/borrow amounts.
 
-The aave-utilities library includes a [`formatReserves`](https://github.com/aave/aave-utilities/#formatReserves) function which can be used to format all data into a human readable format. The queries to fetch data for passing into this function can be found [here](https://github.com/aave/aave-utilities#subgraph).
+The monetaria-utilities library includes a [`formatReserves`](https://github.com/lovecodingdev/monetaria-utilities/#formatReserves) function which can be used to format all data into a human readable format. The queries to fetch data for passing into this function can be found [here](https://github.com/lovecodingdev/monetaria-utilities#subgraph).
 
-Why does the raw subgraph data not match app.aave.com?
+Why does the raw subgraph data not match app.monetaria.com?
 
-- aToken and debtToken balances are continuously increasing. The subgraph provides a snapshot of the balance at the time of indexing (not querying), which means fields affected by interest such as `totalLiquidity`, `availableLiquidity`, and `totalCurrentVariableDebt` will need to be formatted to get real-time values
-- All rates (liquidityRate, variableBorrowRate, stableBorrowRate) are expressed as _APR_ with RAY units (10**27). To convert to the APY percentage as shown on the Monetaria frontend: `supplyAPY = (((1 + ((liquidityRate / 10**27) / 31536000)) ^ 31536000) - 1) \* 100`. [`formatReserves`](https://github.com/aave/aave-utilities/#formatReserves) will perform this calculation for you.
+- mToken and debtToken balances are continuously increasing. The subgraph provides a snapshot of the balance at the time of indexing (not querying), which means fields affected by interest such as `totalLiquidity`, `availableLiquidity`, and `totalCurrentVariableDebt` will need to be formatted to get real-time values
+- All rates (liquidityRate, variableBorrowRate, stableBorrowRate) are expressed as _APR_ with RAY units (10**27). To convert to the APY percentage as shown on the Monetaria frontend: `supplyAPY = (((1 + ((liquidityRate / 10**27) / 31536000)) ^ 31536000) - 1) \* 100`. [`formatReserves`](https://github.com/lovecodingdev/monetaria-utilities/#formatReserves) will perform this calculation for you.
 
 </details>
 
@@ -147,11 +147,11 @@ Why does the raw subgraph data not match app.aave.com?
 
 The `userReserve` entity gives the supply and borrow balances for a particular user along with the underlying reserve data.
 
-The aave-utilities library includes a [`formatUserSummary`](https://github.com/aave/aave-utilities#formatUserSummary) function which can be used to format all data into a human readable format. The queries to fetch data for passing into this function can be found [here](https://github.com/aave/aave-utilities#subgraph).
+The monetaria-utilities library includes a [`formatUserSummary`](https://github.com/lovecodingdev/monetaria-utilities#formatUserSummary) function which can be used to format all data into a human readable format. The queries to fetch data for passing into this function can be found [here](https://github.com/lovecodingdev/monetaria-utilities#subgraph).
 
-Why does the raw subgraph data not match my account balances on app.aave.com?
+Why does the raw subgraph data not match my account balances on app.monetaria.com?
 
-- aToken and debtToken balances are continuously increasing. The subgraph provides a snapshot of the balance at the time of indexing (not querying), which means fields affected by interest such as `currentATokenBalance`, `currentVariableDebt`, and `currentStableDebt` will need to be formatted to get the real-time values
+- mToken and debtToken balances are continuously increasing. The subgraph provides a snapshot of the balance at the time of indexing (not querying), which means fields affected by interest such as `currentMTokenBalance`, `currentVariableDebt`, and `currentStableDebt` will need to be formatted to get the real-time values
 
 </details>
 
@@ -222,16 +222,16 @@ npm run deploy:hosted:mainnet
 
 ### Troubleshooting
 
-If a subgraph encounters an error while indexing, the logs on the explorer may not display the error. You can check for errors on a pending or synced subgraph with the following commands, replacing `aave/protocol-v2` with your subgraph name:
+If a subgraph encounters an error while indexing, the logs on the explorer may not display the error. You can check for errors on a pending or synced subgraph with the following commands, replacing `monetaria/protocol-v2` with your subgraph name:
 
 Pending:
 
 ```
-curl --location --request POST 'https://api.thegraph.com/index-node/graphql' --data-raw '{"query":"{ indexingStatusForPendingVersion(subgraphName: \"aave/protocol-v2\") { subgraph fatalError { message } nonFatalErrors {message } } }"}'
+curl --location --request POST 'https://api.thegraph.com/index-node/graphql' --data-raw '{"query":"{ indexingStatusForPendingVersion(subgraphName: \"monetaria/protocol-v2\") { subgraph fatalError { message } nonFatalErrors {message } } }"}'
 ```
 
 Synced:
 
 ```
-curl --location --request POST 'https://api.thegraph.com/index-node/graphql' --data-raw '{"query":"{ indexingStatusForCurrentVersion(subgraphName: \"aave/protocol-v2\") { subgraph fatalError { message } nonFatalErrors {message } } }"}'
+curl --location --request POST 'https://api.thegraph.com/index-node/graphql' --data-raw '{"query":"{ indexingStatusForCurrentVersion(subgraphName: \"monetaria/protocol-v2\") { subgraph fatalError { message } nonFatalErrors {message } } }"}'
 ```
